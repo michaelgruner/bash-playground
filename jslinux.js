@@ -524,7 +524,7 @@ function start_vm(user, pwd)
     /* read the parameters */
 
     params = get_params();
-    cpu = params["cpu"] || "riscv64";
+    cpu = params["cpu"] || "x86";
     url = params["url"];
     if (!url) {
         if (cpu == "x86")
