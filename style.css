@@ -3,6 +3,7 @@
     font-size: 15px;
     color: #f0f0f0;
     background: #000000;
+    margin-top: 40px;
 }
 
 .term_content a {
@@ -38,4 +39,25 @@ label {
     cursor: pointer;
     margin-left: 5px;
     margin-right: 5px;
+}
+
+/* Icons styling */
+.icon-button {
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+    border: none;
+    cursor: pointer;
+    background-color: transparent; /* remove default button color */
+    background-size: cover;       /* ensure the icon fills the button */
+    outline: none;                 /* remove focus outline for aesthetics, but consider accessibility */
+}
+
+/* Wrapper for the icons */
+.icon-wrapper {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    display: flex; /* aligns the icons side by side */
+    z-index: 1;
 }

@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <title>JSLinux</title>
+  <title>Bash Playground</title>
   <link href="style.css" type="text/css" rel="stylesheet"/>
 <style>
 </style>
@@ -11,18 +11,49 @@
 <div id="term_wrap">
   <div id="term_container">
   </div>
+
+  <!-- Icons wrapper -->
+<div class="icon-wrapper">
+    <button class="icon-button" id="embedButton" title="Embed" style="background-image: url('images/share-outline.svg');"></button>
+    <button class="icon-button" id="pasteButton" title="Paste" style="background-image: url('images/clipboard-outline.svg');"></button>
+    <button class="icon-button" id="clearButton" title="Clear" style="background-image: url('images/trash-outline.svg');"></button>
+</div>
   <div>
-    <textarea id="term_paste" cols="10" rows="1" autocorrect="off">Paste Here</textarea>
-    <label style="display:none">
-      <img title="Upload files" src="images/upload-icon.png"><input type="file" id="files" multiple onchange="on_update_files(this.files)">
-    </label>
     <progress id="net_progress">
     </progress>
   </div>
 </div>
 <script type="text/javascript" src="term.js"></script>
 <script type="text/javascript" src="jslinux.js"></script>
-<div id="copyright">&copy; 2017-2019 Fabrice Bellard</div>
-<div id="copyright">&copy; 2023 Michael Grüner</div>
+<script>
+  document.getElementById('embedButton').addEventListener('click', function() {
+      const currentUrl = window.location.href; // Gets the current URL of the page
+      const iframeCode = `<iframe src="${currentUrl}"></iframe>`; // Example iframe code
+      const iframeCodeCustom = `<iframe src="${currentUrl}?rows=10&cols=30&font_size=10"></iframe>`; // Example iframe code
+
+      alert(`To embed this page into your website, copy and paste the following code:
+
+${iframeCode}
+
+You may customize the terminal size by using query params:
+
+${iframeCodeCustom}`);
+  });
+
+  document.getElementById('pasteButton').addEventListener('click', function() {
+      navigator.clipboard.readText()
+          .then(text => {
+              term_handler(text);
+          })
+          .catch(err => {
+              console.error('Could not paste text: ', err);
+          });
+  });
+
+  document.getElementById('clearButton').addEventListener('click', function() {
+      term_handler("clear\n"); 
+  });
+</script>
+<div id="copyright">&copy; 2017-2019 Fabrice Bellard, 2023 Michael Grüner</div>
 </body>
 </html>
