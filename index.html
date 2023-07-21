@@ -12,12 +12,6 @@
   <div id="term_container">
   </div>
 
-  <!-- Icons wrapper -->
-<div class="icon-wrapper">
-    <button class="icon-button" id="embedButton" title="Embed" style="background-image: url('images/share-outline.svg');"></button>
-    <button class="icon-button" id="pasteButton" title="Paste" style="background-image: url('images/clipboard-outline.svg');"></button>
-    <button class="icon-button" id="clearButton" title="Clear" style="background-image: url('images/trash-outline.svg');"></button>
-</div>
   <div>
     <progress id="net_progress">
     </progress>
@@ -25,35 +19,7 @@
 </div>
 <script type="text/javascript" src="term.js"></script>
 <script type="text/javascript" src="jslinux.js"></script>
-<script>
-  document.getElementById('embedButton').addEventListener('click', function() {
-      const currentUrl = window.location.href; // Gets the current URL of the page
-      const iframeCode = `<iframe src="${currentUrl}"></iframe>`; // Example iframe code
-      const iframeCodeCustom = `<iframe src="${currentUrl}?rows=10&cols=30&font_size=10"></iframe>`; // Example iframe code
 
-      alert(`To embed this page into your website, copy and paste the following code:
-
-${iframeCode}
-
-You may customize the terminal size by using query params:
-
-${iframeCodeCustom}`);
-  });
-
-  document.getElementById('pasteButton').addEventListener('click', function() {
-      navigator.clipboard.readText()
-          .then(text => {
-              term_handler(text);
-          })
-          .catch(err => {
-              console.error('Could not paste text: ', err);
-          });
-  });
-
-  document.getElementById('clearButton').addEventListener('click', function() {
-      term_handler("clear\n"); 
-  });
-</script>
 <div id="copyright">&copy; 2017-2019 Fabrice Bellard, 2023 Michael Grüner</div>
 </body>
 </html>

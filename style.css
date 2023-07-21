@@ -1,9 +1,66 @@
 .term {
+    border: 1px solid #888; /* Add border to make it look like a window */
+    border-radius: 5px; /* Add rounded corners for aesthetic */
+    overflow: hidden; /* Ensures inner content doesn't overflow the rounded borders */
+}
+
+.close_btn {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    background-color: #ff5f57; /* Red color */
+    border-radius: 50%; /* Make it a circle */
+    margin-left: auto;
+    vertical-align: middle; /* Align with the title */
+    cursor: pointer; /* Hand cursor on hover */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Slight shadow for depth */
+}
+
+/* New styles for the terminal header */
+.term_header {
+    background-color: #ebe7e4; /* Gray background */
+    padding: 5px 10px;
+    /* font-weight: bold;*/
+    border-bottom: 1px solid #999;
+
+    /* macOS-like font */
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    color: #000;
+    font-size: 14px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #999;
+}
+
+.term_header .title {
+    margin-left: auto;
+    margin-right: auto; /* This centers the title, pushing away from both sides */
+    z-index: 1;
+}
+
+.icon-wrapper {
+    display: flex;
+    margin-right: auto;
+}
+
+/* Icons styling */
+.icon {
+    width: 22px;
+    height: 22px;
+    /* margin-right: 5px;*/
+    cursor: pointer;
+}
+
+.term_content_container {
     font-family: courier,fixed,swiss,monospace,sans-serif;
     font-size: 15px;
     color: #f0f0f0;
     background: #000000;
-    margin-top: 40px;
+    max-height: 1000px; /* This is an example. Adjust it to a value that you're certain is larger than your content. */
+
+    transition: max-height 0.5s ease;
 }
 
 .term_content a {
@@ -41,23 +98,4 @@ label {
     margin-right: 5px;
 }
 
-/* Icons styling */
-.icon-button {
-    width: 24px;
-    height: 24px;
-    margin-right: 10px;
-    border: none;
-    cursor: pointer;
-    background-color: transparent; /* remove default button color */
-    background-size: cover;       /* ensure the icon fills the button */
-    outline: none;                 /* remove focus outline for aesthetics, but consider accessibility */
-}
 
-/* Wrapper for the icons */
-.icon-wrapper {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    display: flex; /* aligns the icons side by side */
-    z-index: 1;
-}

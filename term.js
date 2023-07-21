@@ -100,19 +100,106 @@ Term.prototype.open = function(parent_el, textarea_el)
             line[i] = c;
         this.lines[y] = line;
     }
-
+    
     /* create the terminal window */
     this.term_el = document.createElement("div");
     this.term_el.className = "term";
-    this.term_el.style.lineHeight = "1.2em";
+    
+    /* create a header for the terminal window */
+    this.header_el = document.createElement("div");
+    this.header_el.className = "term_header";
+    this.term_el.appendChild(this.header_el);
+
+    // Create a wrapper for icons
+    var iconWrapper = document.createElement("div");
+    iconWrapper.className = "icon-wrapper";
+    this.header_el.appendChild(iconWrapper);
+    
+    // Create icons and append to the header
+    var embed_icon = document.createElement("img");
+    embed_icon.src = "images/share-outline.svg";
+    embed_icon.className = "icon";
+    embed_icon.alt = "Embed";
+    embed_icon.title = "Embed";
+    embed_icon.onclick = function() {
+        const currentUrl = window.location.href.split('?')[0];
+        const iframeCode = `<iframe src="${currentUrl}"></iframe>`;
+        const iframeCodeCustom = `<iframe src="${currentUrl}?rows=10&cols=30&font_size=10"></iframe>`;
+        
+        alert(`To embed this page into your website, copy and paste the following code:
+
+${iframeCode}
+
+You may customize the terminal size by using query params:
+
+${iframeCodeCustom}`);
+    };
+    iconWrapper.appendChild(embed_icon);
+
+    var paste_icon = document.createElement("img");
+    paste_icon.src = "images/clipboard-outline.svg";
+    paste_icon.className = "icon";
+    paste_icon.alt = "Paste";
+    paste_icon.title = "Paste";
+    paste_icon.onclick = function() {
+        navigator.clipboard.readText()
+            .then(text => {
+                term_handler(text);
+            })
+            .catch(err => {
+                console.error('Could not paste text: ', err);
+            });
+    };
+    iconWrapper.appendChild(paste_icon);
+
+    var clear_icon = document.createElement("img");
+    clear_icon.src = "images/trash-outline.svg";
+    clear_icon.className = "icon";
+    clear_icon.alt = "Clear";
+    clear_icon.title = "Clear";
+    clear_icon.onclick = function() {
+        term_handler("clear\n"); 
+    }
+    iconWrapper.appendChild(clear_icon);
+
+
+    // Create title and append to the header
+    var titleElement = document.createElement("div");
+    titleElement.className = "title";
+    titleElement.textContent = "Bash Playground";
+    this.header_el.appendChild(titleElement);
+
+    this.close_btn = document.createElement("span");
+    this.close_btn.className = "close_btn";
+    this.close_btn.style.backgroundColor = "#ff5f57"; // Initial color: red
+    this.close_btn.onclick = function() {
+        if (this.term_content_container.style.maxHeight === "0px") {
+            // Show terminal content if hiddenn
+            this.term_content_container.style.maxHeight = this.term_content_container.style.height;
+            this.close_btn.style.backgroundColor = "#ff5f57"; // Red when terminal is visible
+        } else {
+            // Hide terminal content if shown
+            this.term_content_container.style.maxHeight = "0px";
+            this.close_btn.style.backgroundColor = "#28c940"; // Green when terminal is hidden
+        }
+    }.bind(this); // Bind the context
+    this.header_el.appendChild(this.close_btn);
+    
+    // Creating a container for the main terminal content excluding the header
+    this.term_content_container = document.createElement("div");
+    this.term_content_container.className = "term_content_container";
+    this.term_content_container.style.lineHeight = "1.2em";
     /* XXX: could compute the font metrics */
     this.term_el.style.width = "calc(" + this.w + "ch + 16px)";
-    this.term_el.style.height = (this.h * 1.2) + "em";
+    this.term_content_container.style.height = (this.h * 1.2) + "em";
+    this.term_content_container.style.maxHeight = this.term_content_container.style.height;
+
+    this.term_el.appendChild(this.term_content_container);
     
     /* scroll bar */
     this.scrollbar_el = document.createElement("div");
     this.scrollbar_el.className = "term_scrollbar";
-    this.term_el.appendChild(this.scrollbar_el);
+    this.term_content_container.appendChild(this.scrollbar_el);
 
     this.track_el = document.createElement("div");
     this.track_el.className = "term_track";
@@ -136,7 +223,7 @@ Term.prototype.open = function(parent_el, textarea_el)
     this.content_el = document.createElement("div");
     this.content_el.className = "term_content";
     this.content_el.style.width = (this.w) + "ch";
-    this.term_el.appendChild(this.content_el);
+    this.term_content_container.appendChild(this.content_el);
     
     this.rows_el = [];
     for(y=0;y<this.h;y++) {
